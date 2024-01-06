@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'package:flutter/material.dart';
+import '../utils/charges.dart';
+import '../widgets/results.dart';
 
 class FNO extends StatefulWidget {
   const FNO({super.key});
@@ -96,92 +97,28 @@ class _FNOState extends State<FNO> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  getBreakdown();
+                  var charges = OptionsTrade.breakdown(
+                      quantity.text, buy.text, sell.text);
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Display(
-                              stock: stock.text,
-                              totalTax: totalTax,
-                              profit: profit,
-                              brokerage: brokerage,
-                              stt: stt,
-                              etc: etc,
-                              sd: sd,
-                              gst: gst,
-                              sebi: sebi)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Results(
+                          stock: stock.text,
+                          brokerage: charges[0],
+                          gst: charges[1],
+                          sebi: charges[2],
+                          etc: charges[3],
+                          stt: charges[4],
+                          sd: charges[5],
+                          totalTax: charges[6],
+                          profit: charges[7]),
+                    ),
+                  );
                 },
                 child: const Text("Calculate"),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  void getBreakdown() {
-    var quantityVal = double.parse(quantity.text);
-    var buyVal = double.parse(buy.text);
-    var sellVal = double.parse(sell.text);
-    totalSell = quantityVal * sellVal;
-    totalBuy = quantityVal * buyVal;
-    var b1 = (0.05 / 100) * totalSell;
-    var b2 = 20;
-    if (b1 > b2) {
-      brokerage = b2 * 2;
-    } else {
-      brokerage = b1 * 2;
-    }
-    stt = totalSell * (0.0625 / 100);
-    sd = totalBuy * (0.003 / 100);
-    etc = (totalBuy * (0.05 / 100)) + (totalSell * (0.05 / 100));
-    sebi = (totalBuy * (0.0001 / 100)) + (totalSell * (0.0001 / 100));
-    gst = ((18 / 100) * brokerage) + ((18 / 100) * etc);
-    totalTax = brokerage + stt + sd + etc + sebi + gst;
-    profit = ((sellVal - buyVal) * quantityVal) - totalTax;
-  }
-}
-
-class Display extends StatefulWidget {
-  const Display({
-    super.key,
-    required this.stock,
-    required this.totalTax,
-    required this.profit,
-    required this.brokerage,
-    required this.stt,
-    required this.etc,
-    required this.sd,
-    required this.gst,
-    required this.sebi,
-  });
-
-  final stock, totalTax, profit, brokerage, stt, sd, etc, sebi, gst;
-
-  @override
-  State<Display> createState() => _DisplayState();
-}
-
-class _DisplayState extends State<Display> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Stock Name : ${widget.stock}"),
-            Text("Brokerage : ${widget.brokerage}"),
-            Text("Settlement Charges : ${widget.stt}"),
-            Text("Stamp Duty : ${widget.sd}"),
-            Text("Exchange Charges : ${widget.etc}"),
-            Text("SEBI Charges : ${widget.sebi}"),
-            Text("GST Charges: ${widget.gst}"),
-            Text("Total Charges applied : ${widget.totalTax}"),
-            Text("Total Profit : ${widget.profit}"),
-          ],
         ),
       ),
     );
