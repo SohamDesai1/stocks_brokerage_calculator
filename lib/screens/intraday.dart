@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables
+import '../widgets/results.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -103,18 +104,20 @@ class IntradayState extends State<Intraday> {
                 onPressed: () {
                   getBreakdown();
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Display(
-                              stock: stock.text,
-                              totalTax: totalTax,
-                              profit: profit,
-                              brokerage: brokerage,
-                              stt: stt,
-                              etc: etc,
-                              sd: sd,
-                              gst: gst,
-                              sebi: sebi)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Results(
+                          stock: stock.text,
+                          totalTax: totalTax,
+                          profit: profit,
+                          brokerage: brokerage,
+                          stt: stt,
+                          etc: etc,
+                          sd: sd,
+                          gst: gst,
+                          sebi: sebi),
+                    ),
+                  );
                 },
                 child: Text("Calculate"),
               ),
@@ -145,50 +148,5 @@ class IntradayState extends State<Intraday> {
     gst = ((18 / 100) * brokerage) + ((18 / 100) * etc);
     totalTax = brokerage + stt + sd + etc + sebi + gst;
     profit = ((sellVal - buyVal) * quantityVal) - totalTax;
-  }
-}
-
-class Display extends StatefulWidget {
-  const Display({
-    super.key,
-    required this.stock,
-    required this.totalTax,
-    required this.profit,
-    required this.brokerage,
-    required this.stt,
-    required this.etc,
-    required this.sd,
-    required this.gst,
-    required this.sebi,
-  });
-
-  final stock, totalTax, profit, brokerage, stt, sd, etc, sebi, gst;
-
-  @override
-  State<Display> createState() => _DisplayState();
-}
-
-class _DisplayState extends State<Display> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Stock Name : ${widget.stock}"),
-            Text("Brokerage : ${widget.brokerage}"),
-            Text("Settlement Charges : ${widget.stt}"),
-            Text("Stamp Duty : ${widget.sd}"),
-            Text("Exchange Charges : ${widget.etc}"),
-            Text("SEBI Charges : ${widget.sebi}"),
-            Text("GST Charges: ${widget.gst}"),
-            Text("Total Charges applied : ${widget.totalTax}"),
-            Text("Total Profit : ${widget.profit}"),
-          ],
-        ),
-      ),
-    );
   }
 }

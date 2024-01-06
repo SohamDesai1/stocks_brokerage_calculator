@@ -1,6 +1,6 @@
-import 'package:brokerage_calculator/delivery.dart';
-import 'package:brokerage_calculator/fno.dart';
-import 'package:brokerage_calculator/intraday.dart';
+import 'screens/delivery.dart';
+import 'screens/fno.dart';
+import 'screens/intraday.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
