@@ -36,6 +36,7 @@ class IntradayTrade {
       sd,
       totalTax,
       profit,
+      (totalBuy + totalSell),
     ];
   }
 }
@@ -76,6 +77,7 @@ class OptionsTrade {
       sd,
       totalTax,
       profit,
+      (totalBuy + totalSell),
     ];
   }
 }
@@ -121,6 +123,7 @@ class DeliveryTrade {
       sd,
       totalTax,
       profit,
+      (totalBuy + totalSell),
     ];
   }
 }
